@@ -1,13 +1,14 @@
+import { useState } from "react";
 import { Geolocation, useGeolocation } from "@/hooks/useGeolocation";
 
- const Home = () => {
+const Home = () => {
     return (
         <main className="flex h-screen bg-blue-400">
             <div className="m-auto">
                 <div className="bg-white ml-28 mr-28 p-5 rounded-md drop-shadow-md">
                     <h1 className="text-2xl font-medium pb-3">Where should I eat?</h1>
                     <p className="pb-3">
-                        I decided to build this website because I always had a hard time choosing where to eat when 
+                        I decided to build this website because I always had a hard time choosing where to eat when
                         I was with friends. There used to be a really good website (and there still is) called
                         {" "}<a className="text-blue-600 hover:animate-pulse" href="https://wtfsigte.com/" target="_blank">wtfsigte.com</a>{" "}
                         but now it&apos;s an app. I thought it would be cool to build my own web app style version of
@@ -24,11 +25,25 @@ import { Geolocation, useGeolocation } from "@/hooks/useGeolocation";
 };
 
 const GeolocationDisplay = () => {
+
+    const [ places, setPlaces] = useState<any>(null); // [ places, setPlaces
     const { loading, failed, location } = useGeolocation();
+
+    const loadPlaces = async (location: Geolocation) => {
+        let places = await fetch("/api/places", { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                ...location
+            })
+        }).then(res => res.json())
+          .catch(_ => null);
+        console.log(places);
+    }
 
     if (loading) return <p>Loading...</p>;
     if (failed) return <p className="text-red-400">Failed to load location.</p>;
-    return <button className="p-2 bg-blue-500 text-white rounded-md transition ease-in-out duration-500 hover:bg-blue-600" onClick={() => console.log(location)}>Find me a place to eat!</button>
+    return <button className="p-2 bg-blue-500 text-white rounded-md transition ease-in-out duration-500 hover:bg-blue-600" onClick={() => loadPlaces(location)}>Find me a place to eat!</button>
 }
 
 export default Home;
