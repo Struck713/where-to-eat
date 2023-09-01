@@ -5,6 +5,11 @@ export type Geolocation = {
     longitude: number;
 };
 
+/**
+ * Promisified version of getCurrentPosition
+ * 
+ * @returns A promise based on the Navigator Geolocation API
+ */
 const getGeolocation = () => {
     return new Promise<Geolocation>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -16,6 +21,11 @@ const getGeolocation = () => {
     })
 }
 
+/**
+ * A hook to grab the Geolocation. Can be used in components.
+ * 
+ * @returns An object containing loading state, failed state and location.
+ */
 export const useGeolocation = () => {
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ failed, setFailed ] = useState<boolean>(false);

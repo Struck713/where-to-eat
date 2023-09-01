@@ -24,9 +24,8 @@ import { Geolocation, useGeolocation } from "@/hooks/useGeolocation";
 };
 
 const GeolocationDisplay = () => {
-
     const { loading, failed, location } = useGeolocation();
-    
+
     if (loading) return <p>Loading...</p>;
     if (failed) return <p className="text-red-400">Failed to load location.</p>;
     return <button className="p-2 bg-blue-500 text-white rounded-md transition ease-in-out duration-500 hover:bg-blue-600" onClick={() => console.log(location)}>Find me a place to eat!</button>
