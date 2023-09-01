@@ -5,10 +5,12 @@ import { Place, PlaceView } from "@/components/Places";
 
 const Page = () => {
 
+    const [ loading, setLoading ] = useState(false);
     const [place, setPlace] = useState<Place | null>(null); // [ places, setPlaces
-    const { loading, failed, location } = useGeolocation();
+    const { loading: loadingGeolocation, failed, location } = useGeolocation();
 
     const loadPlaces = async (location: Geolocation) => {
+        setLoading(true);
         let places = await fetch("/api/places", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -20,6 +22,7 @@ const Page = () => {
             .catch(_ => null);
 
         if (places) setPlace(places[Math.floor(places.length * Math.random())]);
+        setLoading(false);
     }
 
     return (
@@ -27,7 +30,7 @@ const Page = () => {
             <div className="m-auto">
                 <div className="bg-white ml-28 mr-28 p-5 rounded-md drop-shadow-md">
                     {place ? <PlaceView place={place} /> : <Home />}
-                    <FindPlaceButton loading={loading} failed={failed} location={location} loadPlaces={loadPlaces} />
+                    <FindPlaceButton loading={loadingGeolocation || loading} failed={failed} location={location} loadPlaces={loadPlaces} />
                 </div>
             </div>
         </main>
@@ -36,9 +39,9 @@ const Page = () => {
 
 interface FindPlaceButtonProps { loading: boolean, failed: boolean, location: Geolocation, loadPlaces: Function };
 const FindPlaceButton = ({ loading, failed, location, loadPlaces } : FindPlaceButtonProps) => {
-    if (loading) return <p>Loading...</p>;
-    if (failed) return <p className="text-red-400">Failed to load location.</p>;
-    return <button className="p-2 bg-blue-500 text-white rounded-md transition ease-in-out duration-500 hover:bg-blue-600" onClick={() => loadPlaces(location)}>Find me a place to eat!</button>
+    if (loading) return <button className="p-2 bg-blue-600 text-white rounded-md" disabled>Loading...</button>;
+    if (failed) return <button className="p-2 bg-red-500 text-white rounded-md transition ease-in-out duration-500 hover:bg-red-600">Failed to load location.</button>;
+    return <button className="p-2 bg-blue-500 text-white rounded-md transition ease-in-out duration-500 hover:bg-blue-600" onClick={() => loadPlaces(location)}>Find me a place to eat!</button>;
 }
 
 export default Page;
