@@ -28,7 +28,7 @@ const Page = () => {
     return (
         <main className="flex h-screen bg-blue-400">
             <div className="m-auto">
-                <div className="bg-white ml-28 mr-28 p-5 rounded-md drop-shadow-md">
+                <div className="bg-white ml-5 mr-5 md:mr-60 md:ml-60 p-5 rounded-md drop-shadow-md">
                     {place ? <PlaceView place={place} /> : <Home />}
                     <FindPlaceButton loading={loadingGeolocation || loading} failed={failed} location={location} loadPlaces={loadPlaces} />
                 </div>
