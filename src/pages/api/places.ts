@@ -84,24 +84,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!data) return res.status(404).json({ message: "Failed to make request" });
   return res.status(200).json(data
-    .filter(({ properties }: any) => properties.name !== "")
-    .map(({ properties }: any) => ({
+    .filter(({ properties }: any) => !properties.name || properties.name !== "")
+    .map(({ properties: { datasource, ...properties } }: any) => ({
       name: properties.name,
-      description: properties.datasource.raw.description,
-      distance: properties.distance,
-      attributes: (properties.datasource.raw.cuisine ?? "").split(";"),
+      description: datasource.raw.description,
+      tags: (datasource.raw.cuisine ?? "").replace(/\_/g, " ").split(";"),
+      website: datasource.raw.website,
+      amenity: datasource.raw.amenity,
+      attributes: {
+        delivery: decodeAttribute(datasource.raw.delivery),
+        takeaway: decodeAttribute(datasource.raw.takeaway),
+        driveThrough: decodeAttribute(datasource.raw.drive_through),
+        smoking: decodeAttribute(datasource.raw.smoking),
+        wheelchair: decodeAttribute(datasource.raw.wheelchair),
+      },
       address: {
         street: properties.street,
         city: properties.city,
-        state: properties.state,
+        state: properties.state_code,
         zip: properties.postcode,
       },
       geo: {
+        distance: properties.distance,
         longitude: properties.lon,
         latitude: properties.lat
       }
     }))
   );
 }
+
+const decodeAttribute = (attribute?: string) => attribute === "yes";
 
 export default handler;
