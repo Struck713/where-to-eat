@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const CATEGORIES = [ "catering.restaurant", "catering.fast_food", "catering.pub", "catering.bar" ];
+const CATEGORIES = ["catering.restaurant", "catering.fast_food", "catering.pub", "catering.bar"];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -83,24 +83,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // ];
 
   if (!data) return res.status(404).json({ message: "Failed to make request" });
-  
-  let formatted = data.map(({ properties }: { properties: any }) => ({ 
-    name: properties.name, 
-    description: properties.datasource.raw.description,
-    distance: properties.distance,
-    attributes: (properties.datasource.raw.cuisine ?? "").split(";"),
-    address: {
-      street: properties.street,
-      city: properties.city,
-      state: properties.state,
-      zip: properties.postcode,
-    },
-    geo: {
-      longitude: properties.lon,
-      latitude: properties.lat
-    }
-  }));
-  return res.status(200).json(formatted);
+  return res.status(200).json(data
+    .filter(({ properties }: any) => properties.name !== "")
+    .map(({ properties }: any) => ({
+      name: properties.name,
+      description: properties.datasource.raw.description,
+      distance: properties.distance,
+      attributes: (properties.datasource.raw.cuisine ?? "").split(";"),
+      address: {
+        street: properties.street,
+        city: properties.city,
+        state: properties.state,
+        zip: properties.postcode,
+      },
+      geo: {
+        longitude: properties.lon,
+        latitude: properties.lat
+      }
+    }))
+  );
 }
 
 export default handler;
