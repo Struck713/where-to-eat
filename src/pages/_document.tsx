@@ -12,7 +12,7 @@ export default function Document() {
         <meta name="theme-color" content="#60a5fa" />
         <link rel="icon" href="/favicon.ico"></link>
       </Head>
-      <body>
+      <body className="bg-blue-400">
         <Main />
         <NextScript />
       </body>
