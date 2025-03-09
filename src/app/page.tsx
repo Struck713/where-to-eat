@@ -41,8 +41,8 @@ const Page = () => {
 interface FindPlaceButtonProps { loading: boolean, failed: boolean, location: Geolocation, loadPlaces: Function };
 const FindPlaceButton = ({ loading, failed, location, loadPlaces }: FindPlaceButtonProps) => {
     if (loading) return <button className="p-2 bg-blue-600 text-white rounded-md" disabled>Loading...</button>;
-    if (failed) return <button className="p-2 bg-red-500 text-white rounded-md transition ease-in-out duration-500 hover:bg-red-600">Failed to load location.</button>;
-    return <button className="p-2 bg-blue-500 text-white rounded-md transition ease-in-out duration-500 hover:bg-blue-600" onClick={() => loadPlaces(location)}>Find me a place to eat!</button>;
+    if (failed) return <button className="p-2 bg-red-500 text-white rounded-md">Failed to load location.</button>;
+    return <button className="p-2 bg-blue-500 text-white rounded-md transition ease-in-out duration-500 hover:bg-blue-600 hover:cursor-pointer" onClick={() => loadPlaces(location)}>Find me a place to eat!</button>;
 }
 
 export default Page;
