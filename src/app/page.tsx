@@ -1,8 +1,11 @@
-import { useState } from "react";
-import { Geolocation, useGeolocation } from "@/hooks/useGeolocation";
+"use client";
+
+import { getPlaces } from "@/actions/places";
 import Home from "@/components/Home";
 import { Place, PlaceView } from "@/components/Places";
 import { Link } from "@/components/Text";
+import { Geolocation, useGeolocation } from "@/hooks/useGeolocation";
+import { useState } from "react";
 
 const Page = () => {
 
@@ -11,17 +14,8 @@ const Page = () => {
     const { loading: loadingGeolocation, failed, location } = useGeolocation();
 
     const loadPlaces = async (location: Geolocation) => {
-        setLoading(true);
-        let places = await fetch("/api/places", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                ...location
-            })
-        }).then(res => res.json())
-            .then(places => places as Place[])
-            .catch(_ => null);
-
+        setLoading(true)
+        const places = await getPlaces(location.latitude, location.longitude);
         if (places) setPlace(places[Math.floor(places.length * Math.random())]);
         setLoading(false);
     }
