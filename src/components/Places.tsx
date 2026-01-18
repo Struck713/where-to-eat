@@ -1,7 +1,5 @@
-import Map from "./Map";
-import { Fragment, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { JsxElement } from "typescript";
+import { useMemo } from "react";
 import { Highlight, Link } from "./Text";
 
 export interface Place {
@@ -62,9 +60,9 @@ const decodeType = (amentity: string) => {
     switch(amentity.toLowerCase()) {
         case "restaurant": return "This is your typical sitdown restaurant. Expect to be waited on and enjoy table service.";
         case "cafe": return "This is a cafe. They will likely serve coffee, light meals, and pastries, usually with a relaxed and cozy atmosphere.";
-        case "bar": return "Bar";
+        case "bar": return "This is a bar. Expect a social atmosphere focused on alcoholic drinks, with limited food options and casual service.";
         case "fast_food": return "This is a fast food restaurant. Do not expect much wait time. Delivery and drivethrough services are usually avaliable.";
-        case "pub": return "Pub";
+        case "pub": return "This is a pub. Expect a relaxed, social setting with alcoholic drinks and hearty food, often served in a casual, community-focused atmosphere.";
     }
     return "N/A"
 }

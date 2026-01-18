@@ -10,7 +10,8 @@ import { useState } from "react";
 const Page = () => {
 
     const [loading, setLoading] = useState(false);
-    const [place, setPlace] = useState<Place | null>(null); // [ places, setPlaces
+    const [filters, setFilters] = useState([]);
+    const [place, setPlace] = useState<Place | null>(null);
     const { loading: loadingGeolocation, failed, location } = useGeolocation();
 
     const loadPlaces = async (location: Geolocation) => {

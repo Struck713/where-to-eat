@@ -1,16 +1,16 @@
 import { LatLngTuple } from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import 'leaflet-defaulticon-compatibility';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
+import 'leaflet/dist/leaflet.css';
 
 interface MapProps { name: string, distance: number, longitude: number, latitude: number; };
 const Map = ({ name, distance, longitude, latitude }: MapProps) => {
     const position: LatLngTuple = [latitude, longitude];
     return (
         <MapContainer 
-            className="h-[200px] w-full relative"
+            className="h-50 w-full relative"
             center={position} 
             zoom={15}
             zoomControl={false} 
