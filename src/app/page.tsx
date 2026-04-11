@@ -10,15 +10,20 @@ import { useState } from "react";
 const Page = () => {
 
     const [loading, setLoading] = useState(false);
-    const [filters, setFilters] = useState([]);
+    const [places, setPlaces] = useState<Place[]>();
     const [place, setPlace] = useState<Place | null>(null);
     const { loading: loadingGeolocation, failed, location } = useGeolocation();
 
     const loadPlaces = async (location: Geolocation) => {
-        setLoading(true)
-        const places = await getPlaces(location.latitude, location.longitude);
-        if (places) setPlace(places[Math.floor(places.length * Math.random())]);
-        setLoading(false);
+        if (!places) {
+            setLoading(true);
+            const places = await getPlaces(location.latitude, location.longitude);
+            setPlaces(places);
+            setPlace(places[Math.floor(places.length * Math.random())]);
+            setLoading(false);
+        } else {
+            setPlace(places[Math.floor(places.length * Math.random())]);
+        }
     }
 
     return (
